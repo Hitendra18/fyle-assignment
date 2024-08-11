@@ -2,11 +2,26 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ViewUserComponent } from './view-user.component';
 import { UserDataService } from '../../services/user-data.service';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
+import { Dialog } from 'primeng/dialog';
 
 // Mock UserDataService
 class MockUserDataService {
   getWorkoutTypes() {
     return ['Running', 'Swimming', 'Cycling'];
+  }
+
+  getSingleUser(email: string) {
+    if (email === 'john.doe@example.com') {
+      return {
+        email,
+        name: 'John Doe',
+        workouts: [
+          { index: 0, duration: 30 },
+          { index: 1, duration: 45 },
+        ],
+      };
+    }
+    return null;
   }
 }
 
@@ -47,7 +62,12 @@ fdescribe('ViewUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have workoutData based on selectedWorkoutList', () => {
+  it('should initialize with default values', () => {
+    expect(component.visible).toBe(false);
+    expect(component.selectedUser).toBeNull();
+  });
+
+  it('should have workoutData based on workoutList', () => {
     component.selectedUser = {
       email: 'john.doe@example.com',
       name: 'John Doe',
@@ -103,7 +123,7 @@ fdescribe('ViewUserComponent', () => {
     expect(component.visible).toBeFalse();
   });
 
-  it('should set selectedWorkoutList when selectedUser changes', () => {
+  it('should set workoutList when selectedUser changes', () => {
     component.selectedUser = {
       email: 'john.doe@example.com',
       name: 'John Doe',
@@ -115,7 +135,7 @@ fdescribe('ViewUserComponent', () => {
     component.ngOnChanges({
       selectedUser: createSimpleChange(component.selectedUser, null, true),
     });
-    expect(component.selectedWorkoutList).toEqual([
+    expect(component.workoutList).toEqual([
       { name: 'Running', duration: 30 },
       { name: 'Swimming', duration: 45 },
     ]);
@@ -124,5 +144,48 @@ fdescribe('ViewUserComponent', () => {
   it('should populate workout types from the service', () => {
     const workoutTypes = component.workoutTypes;
     expect(workoutTypes).toEqual(['Running', 'Swimming', 'Cycling']);
+  });
+
+  it('should maximize the dialog when visible changes to true', () => {
+    const dialogInstance = jasmine.createSpyObj('Dialog', ['maximize']);
+    component.dialog = dialogInstance as Dialog;
+    
+    component.visible = true;
+    component.ngOnChanges({
+      visible: createSimpleChange(component.visible, false, false),
+    });
+
+    expect(dialogInstance.maximize).toHaveBeenCalled();
+  });
+
+  it('should return an empty workout list if no user is selected', () => {
+    component.selectedUser = null;
+    expect(component.workoutList).toEqual([]);
+  });
+
+  it('should return an empty workout list if user does not exist', () => {
+    component.selectedUser = { email: 'unknown@example.com', name: 'Unknown', workouts: [] };
+    expect(component.workoutList).toEqual([]);
+  });
+
+  it('should have correct chart options', () => {
+    expect(component.chartOptions).toEqual({
+      scales: {
+        x: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Workout',
+          },
+        },
+        y: {
+          display: true,
+          title: {
+            display: true,
+            text: 'duration in minutes',
+          },
+        },
+      },
+    });
   });
 });

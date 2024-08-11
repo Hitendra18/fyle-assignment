@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -17,24 +16,24 @@ import { Dialog } from 'primeng/dialog';
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.css',
 })
-export class EditUserComponent implements OnChanges, AfterViewInit {
+export class EditUserComponent implements OnChanges {
   @Input() visible: boolean = false;
   @Input() selectedUser: User | null = null;
   // fired when this dialog is closed by user
   @Output() closeEvent = new EventEmitter<void>();
   @ViewChild('dialog') dialog: Dialog | undefined;
 
-	constructor(private userDataService: UserDataService) {}
+  constructor(private userDataService: UserDataService) {}
 
   selectedWorkoutList: { name: string; duration: number }[] = [];
-  
-	// getter for workout types from UserDataService
-	get workoutTypes(): string[] {
+
+  // getter for workout types from UserDataService
+  get workoutTypes(): string[] {
     return this.userDataService.getWorkoutTypes();
   }
 
-	// getter for formatted available workout types for user
-	get availableWorkoutTypes(): { name: string }[] {
+  // getter for formatted available workout types for user
+  get availableWorkoutTypes(): { name: string }[] {
     return this.workoutTypes
       .filter(
         (workout) =>
@@ -44,7 +43,6 @@ export class EditUserComponent implements OnChanges, AfterViewInit {
       )
       .map((workout) => ({ name: workout }));
   }
-
 
   // Keeps track of selected workout list
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,17 +56,8 @@ export class EditUserComponent implements OnChanges, AfterViewInit {
         });
       }
     }
-  }
-
-  // Maximize the dialog box
-  ngAfterViewInit() {
-    function showDialogMaximized(dialog: Dialog) {
-      setTimeout(() => {
-        dialog.maximize();
-      }, 0);
-    }
-    if (this.dialog) {
-      showDialogMaximized(this.dialog);
+    if (changes['visible'] && this.visible && this.dialog) {
+      this.dialog!.maximize();
     }
   }
 

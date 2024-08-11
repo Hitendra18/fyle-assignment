@@ -5,9 +5,11 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { User } from '../../utils/initialData';
 import { UserDataService } from '../../services/user-data.service';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-view-user',
@@ -18,25 +20,37 @@ export class ViewUserComponent implements OnChanges {
   @Input() visible: boolean = false;
   @Input() selectedUser: User | null = null;
   @Output() closeEvent = new EventEmitter<void>();
+  @ViewChild('dialog') dialog: Dialog | undefined;
 
   constructor(private userDataService: UserDataService) {}
 
-	// get workout types from UserDataService
+  // get workout types from UserDataService
   get workoutTypes(): string[] {
     return this.userDataService.getWorkoutTypes();
   }
-  selectedWorkoutList: { name: string; duration: number }[] = [];
-  
-	// getter for user's workout Data and formatted to plot the bar chart
-	get workoutData(): any {
+
+  get workoutList(): { name: string; duration: number }[] {
+    const email = this.selectedUser?.email;
+    if (!email) return [];
+    const user = this.userDataService.getSingleUser(email);
+    if (!user) return [];
+
+    return (
+      user.workouts.map((workout) => ({
+        name: this.workoutTypes[workout.index],
+        duration: workout.duration,
+      })) || []
+    );
+  }
+
+  // getter for user's workout Data and formatted to plot the bar chart
+  get workoutData(): any {
     return {
-      labels: this.selectedWorkoutList.map((workout) =>
-        workout.name.toUpperCase()
-      ),
+      labels: this.workoutList.map((workout) => workout.name.toUpperCase()),
       datasets: [
         {
           label: 'Workout Type',
-          data: this.selectedWorkoutList.map((workout) => workout.duration),
+          data: this.workoutList.map((workout) => workout.duration),
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(255, 159, 64, 0.2)',
@@ -62,7 +76,7 @@ export class ViewUserComponent implements OnChanges {
     };
   }
 
-	// bar chart options
+  // bar chart options
   chartOptions = {
     scales: {
       x: {
@@ -82,21 +96,14 @@ export class ViewUserComponent implements OnChanges {
     },
   };
 
-	// Keeps track of selected users data
+  // opens dialog in maximized mode
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedUser'] && changes['selectedUser'].currentValue) {
-      if (this.selectedUser) {
-        this.selectedWorkoutList = this.selectedUser.workouts.map((workout) => {
-          return {
-            name: this.workoutTypes[workout.index],
-            duration: workout.duration,
-          };
-        });
-      }
+    if (changes['visible'] && this.visible && this.dialog) {
+      this.dialog!.maximize();
     }
   }
 
-	// close dialog box handler
+  // close dialog box handler
   closeDialog() {
     this.visible = false;
     this.closeEvent.emit();
