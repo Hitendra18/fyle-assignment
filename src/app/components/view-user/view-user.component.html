@@ -1,0 +1,11 @@
+<p-dialog
+  [header]="'Viewing ' + selectedUser?.name + ' info'"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '35rem' }"
+  [showHeader]="true"
+  [closable]="false"
+>
+  <p-chart type="bar" [data]="workoutData" [options]="chartOptions" width="full" height="400px" />
+  <p-button label="Close" severity="secondary" (onClick)="closeDialog()" />
+</p-dialog>

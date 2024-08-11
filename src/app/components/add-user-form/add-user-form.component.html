@@ -1,0 +1,42 @@
+<form
+  [formGroup]="userForm"
+  (ngSubmit)="handleSubmit()"
+  class="flex flex-col lg:flex-row gap-4 items-center"
+>
+  <div>
+    <p-floatLabel>
+      <input pInputText id="name" formControlName="name" />
+      <label for="name">Name</label>
+    </p-floatLabel>
+    <div
+      *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+      class="absolute"
+    >
+      <small *ngIf="name?.errors?.['required']">Name is required.</small>
+      <small *ngIf="name?.errors?.['minlength']">
+        Name must be at least 2 characters long.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <p-floatLabel>
+      <input pInputText id="email" formControlName="email" />
+      <label for="email">Email</label>
+    </p-floatLabel>
+    <div
+      *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+      class="absolute"
+    >
+      <small *ngIf="email?.errors?.['required']">Email is required.</small>
+      <small *ngIf="email?.errors?.['email']">Invalid email format.</small>
+    </div>
+  </div>
+
+  <p-button
+    label="Add"
+    size="small"
+    type="submit"
+    [disabled]="userForm.invalid"
+  />
+</form>

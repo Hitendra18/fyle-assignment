@@ -1,0 +1,33 @@
+<form
+  [formGroup]="workoutForm"
+  (ngSubmit)="handleSubmit()"
+  class="flex gap-4 items-center"
+>
+  <div>
+    <p-floatLabel>
+      <input pInputText id="workoutName" formControlName="workoutName" />
+      <label for="workoutName">Name workout</label>
+    </p-floatLabel>
+    <div
+      *ngIf="
+        workoutName?.invalid && (workoutName?.dirty || workoutName?.touched)
+      "
+      class="absolute"
+    >
+      <small *ngIf="workoutName?.errors?.['required']">Name is required.</small>
+      <small *ngIf="workoutName?.errors?.['minlength']">
+        Name must be at least 2 characters long.
+      </small>
+      <small *ngIf="workoutName?.errors?.['workoutTypeExists']">
+        This workout already exists.
+      </small>
+    </div>
+  </div>
+
+  <p-button
+    label="Add"
+    size="small"
+    type="submit"
+    [disabled]="workoutForm.invalid"
+  />
+</form>

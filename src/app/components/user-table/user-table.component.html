@@ -1,0 +1,103 @@
+<div class="flex flex-col lg:flex-row items-center mb-4 gap-2 ml-6">
+  <input
+    pInputText
+    type="text"
+    name="searchTerm"
+    placeholder="Search users"
+    [(ngModel)]="searchTerm"
+    class="px-2 py-[10px] border border-gray-300 rounded text-[18px] w-[250px]"
+  />
+
+  <p-dropdown
+    [options]="workoutOptions"
+    placeholder="Filter by Workout"
+    [(ngModel)]="selectedWorkoutFilter"
+    [style]="{ width: '250px' }"
+    optionLabel="label"
+  ></p-dropdown>
+
+  <button
+    pButton
+    type="button"
+    label="Clear Filters"
+    class="px-2 py-[10px] text-sm"
+    (click)="clearFilters()"
+  ></button>
+</div>
+
+<div class="border-2 border-solid border-gray-500/50 rounded-lg overflow-hidden">
+  <p-table
+    [value]="users"
+    [paginator]="true"
+    [rows]="5"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[3, 5, 10, 20]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Workouts</th>
+        <th>Total Workouts</th>
+        <th>Total Duration (min)</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user let-i="rowIndex">
+      <tr class="p-0 m-0">
+        <td>{{ i + 1 }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td class="max-w-[300px]">
+          <p-chip
+            *ngFor="let workout of user.workouts"
+            [label]="workoutTypes[workout.index].toUpperCase()"
+            styleClass="text-[10px] text-gray-700 font-medium bg-green-300/30 px-3 rounded mx-2 my-1"
+          ></p-chip>
+        </td>
+        <td>{{ user.workouts.length }}</td>
+        <td>{{ getTotalDuration(user) }} min</td>
+        <td class="font-thin">
+          <button
+            pButton
+            type="button"
+            label="View"
+            (click)="onView(user)"
+            size="small"
+            class="p-0 px-2 py-1 text-sm m-1"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Edit"
+            (click)="onEdit(user)"
+            size="small"
+            class="p-0 px-2 py-1 text-sm m-1"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            (click)="onDelete(user)"
+            severity="danger"
+            size="small"
+            class="p-0 px-2 py-1 text-sm m-1"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<app-view-user
+  [visible]="viewDialogVisible"
+  [selectedUser]="selectedUser"
+  (closeEvent)="handleCloseDialog()"
+></app-view-user>
+
+<app-edit-user
+  [visible]="editDialogVisible"
+  [selectedUser]="selectedUser"
+  (closeEvent)="handleCloseDialog()"
+></app-edit-user>
