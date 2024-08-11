@@ -29,8 +29,8 @@ To run locally follow these 3 simple steps:
 
 ## Reports
 
-- [Code Coverage Report](https://github.com/Hitendra18/fyle-assignment/blob/main/misc/code-coverage-report.pdf)
-- [Unit Test Report](https://github.com/Hitendra18/fyle-assignment/blob/main/misc/unit-test-report.pdf)
+- [Code Coverage Report](https://github.com/Hitendra18/fyle-assignment/blob/main/misc/code-coverage.pdf)
+- [Unit Test Report](https://github.com/Hitendra18/fyle-assignment/blob/main/misc/code-tests.pdf)
   - Unit test report is for only `ViewUserComponent` and `UserDataService`
 ### Generate yourself
 - Code Coverage Report - `ng test --code-coverage`
