@@ -1,28 +1,3 @@
-// import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-// import { ViewUserComponent } from './view-user.component';
-// import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-// fdescribe('ViewUserComponent', () => {
-//   let component: ViewUserComponent;
-//   let fixture: ComponentFixture<ViewUserComponent>;
-
-//   beforeEach(async () => {
-//     await TestBed.configureTestingModule({
-//       declarations: [ViewUserComponent],
-//       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-//     }).compileComponents();
-
-//     fixture = TestBed.createComponent(ViewUserComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ViewUserComponent } from './view-user.component';
 import { UserDataService } from '../../services/user-data.service';

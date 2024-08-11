@@ -1,6 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { UserDataService } from '../../services/user-data.service';
 
+// custom validator to check if this workout already exists or not
 export function invalidWorkoutType(
   userDataService: UserDataService
 ): ValidatorFn {

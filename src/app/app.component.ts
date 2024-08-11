@@ -7,10 +7,10 @@ import { UserDataService } from './services/user-data.service';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  title = 'fyle';
-
   constructor(private userDataService: UserDataService) {}
 
+	// initialize usersData and workoutTypes from local storage 
+	// if they don't already exist
   ngOnInit(): void {
     this.userDataService.initialize();
   }

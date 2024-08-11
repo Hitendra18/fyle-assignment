@@ -21,11 +21,14 @@ export class ViewUserComponent implements OnChanges {
 
   constructor(private userDataService: UserDataService) {}
 
+	// get workout types from UserDataService
   get workoutTypes(): string[] {
     return this.userDataService.getWorkoutTypes();
   }
   selectedWorkoutList: { name: string; duration: number }[] = [];
-  get workoutData(): any {
+  
+	// getter for user's workout Data and formatted to plot the bar chart
+	get workoutData(): any {
     return {
       labels: this.selectedWorkoutList.map((workout) =>
         workout.name.toUpperCase()
@@ -59,6 +62,7 @@ export class ViewUserComponent implements OnChanges {
     };
   }
 
+	// bar chart options
   chartOptions = {
     scales: {
       x: {
@@ -78,6 +82,7 @@ export class ViewUserComponent implements OnChanges {
     },
   };
 
+	// Keeps track of selected users data
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedUser'] && changes['selectedUser'].currentValue) {
       if (this.selectedUser) {
@@ -91,9 +96,9 @@ export class ViewUserComponent implements OnChanges {
     }
   }
 
+	// close dialog box handler
   closeDialog() {
     this.visible = false;
-    console.log('dialog closed from view user');
     this.closeEvent.emit();
   }
 }

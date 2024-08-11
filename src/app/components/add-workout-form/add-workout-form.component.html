@@ -4,6 +4,7 @@
   class="flex gap-4 items-center"
 >
   <div>
+		<!-- Workout name field -->
     <p-floatLabel>
       <input pInputText id="workoutName" formControlName="workoutName" />
       <label for="workoutName">Name workout</label>
@@ -14,6 +15,7 @@
       "
       class="absolute"
     >
+		<!-- Error Messages -->
       <small *ngIf="workoutName?.errors?.['required']">Name is required.</small>
       <small *ngIf="workoutName?.errors?.['minlength']">
         Name must be at least 2 characters long.

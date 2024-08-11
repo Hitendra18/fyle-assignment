@@ -14,17 +14,20 @@ export class UserDataService {
 
   constructor() {}
 
+	// returns list of all users from localStorage
   getUsersData(): User[] {
     const existingData = localStorage.getItem(this.userStorageKey);
     return JSON.parse(existingData || '[]');
   }
 
+	// returns list of all workout types from localStorage
   getWorkoutTypes(): string[] {
     return JSON.parse(
       localStorage.getItem(this.workoutTypesStorageKey) || '[]'
     );
   }
 
+	// returns user by email if exists from localStorage
   getSingleUser(email: string): User | null {
     const users = this.getUsersData();
     email = email.trim();
@@ -37,7 +40,7 @@ export class UserDataService {
     return null;
   }
 
-  // 1. Initialize everything: Clear localStorage and add new entries
+  // Initialize everything: Clear localStorage and add new entries
   initialize(): void {
     if (!localStorage.getItem(this.userStorageKey)) {
       localStorage.setItem(
@@ -52,19 +55,16 @@ export class UserDataService {
         JSON.stringify(initialWorkoutTypes)
       );
     }
-
-    console.log(
-      'LocalStorage initialized with userData and workoutTypes if not already set.'
-    );
   }
 
+	// checks if user exists if not then adds to the localStorage
   addUser(name: string, email: string): void {
     const users = this.getUsersData();
     email = email.trim();
     name = name.trim();
 
     if (users.some((user) => user.email === email)) {
-      console.error('User with this email already exists.');
+      console.error(`User with the email ${email} already exists.`);
       return;
     }
 
@@ -74,6 +74,7 @@ export class UserDataService {
     console.log('New user added to userData in localStorage');
   }
 
+	// checks if user exists if yes then deletes it from localStorage
   deleteUser(email: string): void {
     const users = this.getUsersData();
     email = email.trim();
@@ -81,16 +82,17 @@ export class UserDataService {
     const userIndex = users.findIndex((user) => user.email === email);
 
     if (userIndex === -1) {
-      console.error('User with this email does not exist.');
+      console.error(`User with the email ${email} does not exist.`);
       return;
     }
 
     users.splice(userIndex, 1);
     localStorage.setItem(this.userStorageKey, JSON.stringify(users));
 
-    console.log('New user added to userData in localStorage');
+    console.log('One user removed from the localStorage');
   }
 
+	// checks if workout type exists if not then adds to the localStorage
   addWorkoutType(workoutName: string): void {
     workoutName = workoutName.toLowerCase().trim();
 
@@ -112,6 +114,7 @@ export class UserDataService {
     );
   }
 
+	// checks if user exists if yes then updates it's workouts in localStorage
   updateUserWorkouts(
     email: string,
     workouts: { name: string; duration: number }[]
@@ -119,9 +122,9 @@ export class UserDataService {
     const users = this.getUsersData();
     const userIndex = users.findIndex((item) => item.email === email);
 
+		// user doesn't exists
     if (userIndex === -1) return;
 
-    // const user = users[userIndex];
     const workoutTypes = this.getWorkoutTypes();
 
     let formattedWorkouts: { index: number; duration: number }[] = [];
@@ -133,7 +136,6 @@ export class UserDataService {
     }
 
     users[userIndex].workouts = formattedWorkouts;
-    console.log('final before setting to local storage', users[userIndex]);
     localStorage.setItem(this.userStorageKey, JSON.stringify(users));
   }
 }

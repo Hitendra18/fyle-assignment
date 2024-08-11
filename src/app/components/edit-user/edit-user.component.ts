@@ -17,17 +17,24 @@ import { Dialog } from 'primeng/dialog';
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.css',
 })
-export class EditUserComponent implements OnChanges {
+export class EditUserComponent implements OnChanges, AfterViewInit {
   @Input() visible: boolean = false;
   @Input() selectedUser: User | null = null;
+  // fired when this dialog is closed by user
   @Output() closeEvent = new EventEmitter<void>();
   @ViewChild('dialog') dialog: Dialog | undefined;
 
+	constructor(private userDataService: UserDataService) {}
+
   selectedWorkoutList: { name: string; duration: number }[] = [];
-  get workoutTypes(): string[] {
+  
+	// getter for workout types from UserDataService
+	get workoutTypes(): string[] {
     return this.userDataService.getWorkoutTypes();
   }
-  get availableWorkoutTypes(): { name: string }[] {
+
+	// getter for formatted available workout types for user
+	get availableWorkoutTypes(): { name: string }[] {
     return this.workoutTypes
       .filter(
         (workout) =>
@@ -38,8 +45,8 @@ export class EditUserComponent implements OnChanges {
       .map((workout) => ({ name: workout }));
   }
 
-  constructor(private userDataService: UserDataService) {}
 
+  // Keeps track of selected workout list
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedUser'] && changes['selectedUser'].currentValue) {
       if (this.selectedUser) {
@@ -52,12 +59,9 @@ export class EditUserComponent implements OnChanges {
       }
     }
   }
-  ngAfterViewInit() {
-    // if (this.dialog) {
-    //   this.dialog.maximize();
-    // }
-    // let myDialog = this.dialog
 
+  // Maximize the dialog box
+  ngAfterViewInit() {
     function showDialogMaximized(dialog: Dialog) {
       setTimeout(() => {
         dialog.maximize();
@@ -68,11 +72,13 @@ export class EditUserComponent implements OnChanges {
     }
   }
 
+  // close dialog handler
   closeDialog() {
     this.visible = false;
     this.closeEvent.emit();
   }
 
+  // update duration handler
   valueChanged(event: any, i: number) {
     const newDuration = Number(event.target?.value);
     if (newDuration) {
@@ -80,6 +86,7 @@ export class EditUserComponent implements OnChanges {
     }
   }
 
+  // save changes or submit handler
   handleSubmit() {
     if (!this.selectedUser?.email) return;
     this.userDataService.updateUserWorkouts(
@@ -90,16 +97,16 @@ export class EditUserComponent implements OnChanges {
     this.closeEvent.emit();
   }
 
+  // add new workout when selected from dropdown
   handleDropDown(event: any) {
     const selectedValue = event.value;
     this.selectedWorkoutList.push({ name: selectedValue, duration: 0 });
   }
 
+  // remove workout handler
   handleRemoveWorkout(workoutName: string) {
     this.selectedWorkoutList = this.selectedWorkoutList.filter(
       (workout) => workout.name !== workoutName
     );
-
-    console.log('After removing', this.selectedWorkoutList);
   }
 }

@@ -1,25 +1,29 @@
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+// angular imports
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { AddUserFormComponent } from './components/add-user-form/add-user-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserTableComponent } from './components/user-table/user-table.component';
 
-// primeng modules
+// components
+import { AddUserFormComponent } from './components/add-user-form/add-user-form.component';
+import { UserTableComponent } from './components/user-table/user-table.component';
+import { ViewUserComponent } from './components/view-user/view-user.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
+import { AddWorkoutFormComponent } from './components/add-workout-form/add-workout-form.component';
+
+// primeNg component modules
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TableModule } from 'primeng/table';
 import { ChipModule } from 'primeng/chip';
-import { ViewUserComponent } from './components/view-user/view-user.component';
 import { DialogModule } from 'primeng/dialog';
-import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { DropdownModule } from 'primeng/dropdown';
 import { ChartModule } from 'primeng/chart';
-import { AddWorkoutFormComponent } from './components/add-workout-form/add-workout-form.component';
 
 @NgModule({
   declarations: [
@@ -31,19 +35,19 @@ import { AddWorkoutFormComponent } from './components/add-workout-form/add-worko
     AddWorkoutFormComponent
   ],
   imports: [
+		FormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-		FormsModule,
+		ChartModule,
     ButtonModule,
     InputTextModule,
     FloatLabelModule,
-    TableModule,
     ChipModule,
+    TableModule,
     DialogModule,
-    KeyFilterModule,
     DropdownModule,
-    ChartModule,
+    KeyFilterModule,
   ],
   providers: [provideAnimations()],
   bootstrap: [AppComponent],

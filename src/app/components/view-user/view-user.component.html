@@ -5,6 +5,7 @@
   [style]="{ width: '35rem' }"
   [showHeader]="true"
   [closable]="false"
+	maximizable="true"
 >
   <p-chart type="bar" [data]="workoutData" [options]="chartOptions" width="full" height="400px" />
   <p-button label="Close" severity="secondary" (onClick)="closeDialog()" />

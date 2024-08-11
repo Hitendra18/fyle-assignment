@@ -13,6 +13,8 @@ export class UserTableComponent {
   editDialogVisible = false;
   searchTerm: string = '';
   selectedWorkoutFilter: { label: string; value: string } | null = null;
+
+  // getter for workout options in filter
   get workoutOptions(): { label: string; value: string }[] {
     return this.getWorkoutOptions();
   }
@@ -23,6 +25,7 @@ export class UserTableComponent {
 
   constructor(private userDataService: UserDataService) {}
 
+  // getter for all of the users after applying filters
   get users(): User[] {
     return this.userDataService
       .getUsersData()
@@ -43,6 +46,7 @@ export class UserTableComponent {
       });
   }
 
+  // returns total duration in minutes
   getTotalDuration(user: any): number {
     return user.workouts.reduce(
       (total: number, workout: any) => total + workout.duration,
@@ -57,12 +61,14 @@ export class UserTableComponent {
     }));
   }
 
+  // shows graphs dialog box
   onView(user: User): void {
     console.log('click on view');
     this.selectedUser = user;
     this.viewDialogVisible = true;
   }
 
+  // shows edit dialog box
   onEdit(user: User): void {
     this.selectedUser = user;
     this.editDialogVisible = true;
@@ -79,6 +85,7 @@ export class UserTableComponent {
     this.selectedUser = null;
   }
 
+  // resets filters
   clearFilters() {
     this.searchTerm = '';
     this.selectedWorkoutFilter = null;

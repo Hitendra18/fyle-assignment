@@ -1,4 +1,5 @@
 <div class="flex flex-col lg:flex-row items-center mb-4 gap-2 ml-6">
+	<!-- search input -->
   <input
     pInputText
     type="text"
@@ -8,6 +9,7 @@
     class="px-2 py-[10px] border border-gray-300 rounded text-[18px] w-[250px]"
   />
 
+	<!-- filter dropdown -->
   <p-dropdown
     [options]="workoutOptions"
     placeholder="Filter by Workout"
@@ -16,6 +18,7 @@
     optionLabel="label"
   ></p-dropdown>
 
+	<!-- reset filter button -->
   <button
     pButton
     type="button"
@@ -33,6 +36,7 @@
     [tableStyle]="{ 'min-width': '50rem' }"
     [rowsPerPageOptions]="[3, 5, 10, 20]"
   >
+	<!-- table header -->
     <ng-template pTemplate="header">
       <tr>
         <th>S.No</th>
@@ -59,6 +63,7 @@
         </td>
         <td>{{ user.workouts.length }}</td>
         <td>{{ getTotalDuration(user) }} min</td>
+				<!-- Action buttons -->
         <td class="font-thin">
           <button
             pButton
@@ -90,12 +95,15 @@
     </ng-template>
   </p-table>
 </div>
+
+<!-- view graph dialog box -->
 <app-view-user
-  [visible]="viewDialogVisible"
-  [selectedUser]="selectedUser"
-  (closeEvent)="handleCloseDialog()"
+[visible]="viewDialogVisible"
+[selectedUser]="selectedUser"
+(closeEvent)="handleCloseDialog()"
 ></app-view-user>
 
+<!-- edit dialog box -->
 <app-edit-user
   [visible]="editDialogVisible"
   [selectedUser]="selectedUser"

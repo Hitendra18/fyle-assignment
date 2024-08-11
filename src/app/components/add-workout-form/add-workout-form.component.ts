@@ -35,7 +35,7 @@ export class AddWorkoutFormComponent {
     if (this.workoutForm.valid) {
       let { workoutName } = this.workoutForm.value;
       if (workoutName) workoutName = workoutName.trim().toLowerCase();
-      console.log('Form will be submitted with', workoutName);
+			
       this.userDataService.addWorkoutType(workoutName);
       this.workoutForm.reset();
     } else {

@@ -10,6 +10,7 @@
   class="relative"
 >
   <div class="flex flex-col gap-0">
+		<!-- Dropdown for adding new workouts -->
     <div class="mb-4">
       <h4 class="m-0 mb-4">Add Workout</h4>
       <p-dropdown
@@ -23,6 +24,8 @@
         (onChange)="handleDropDown($event)"
       ></p-dropdown>
     </div>
+
+		<!-- List of selected workouts -->
     <div class="mb-6">
       <div
         *ngFor="let workout of selectedWorkoutList; let i = index"
@@ -30,9 +33,11 @@
         class="rounded-lg px-2 hover:bg-blue-300/50 border-y border-red-300"
       >
         <div class="flex justify-between items-center">
+					<!-- workout name -->
           <p class="font-semibold">{{ workout.name.toUpperCase() }}</p>
 
           <div class="flex items-center gap-4">
+						<!-- edit duration input -->
             <input
               pInputText
               pKeyFilter="int"
@@ -40,6 +45,7 @@
               [defaultValue]="workout.duration"
               (input)="valueChanged($event, i)"
             />
+						<!-- remove workout button -->
             <p-button
               icon="pi pi-trash"
               styleClass="px-0 py-2 text-center"
@@ -49,6 +55,8 @@
         </div>
       </div>
     </div>
+
+		<!-- Save and cancel buttons -->
     <div class="flex gap-2">
       <p-button label="Close" severity="secondary" (onClick)="closeDialog()" />
       <p-button label="Save" (onClick)="handleSubmit()" />

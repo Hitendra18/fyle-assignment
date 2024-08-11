@@ -32,7 +32,6 @@ export class AddUserFormComponent {
     if (this.userForm.valid) {
       const { name, email } = this.userForm.value;
       this.userDataService.addUser(name, email);
-      console.log('Form submitted', this.userForm.value);
       this.userForm.reset();
     } else {
       console.log('Form is invalid');
