@@ -13,15 +13,15 @@ export class UserTableComponent {
   editDialogVisible = false;
   searchTerm: string = '';
   selectedWorkoutFilter: { label: string; value: string } | null = null;
-  workoutOptions: { label: string; value: string }[] = [];
+  get workoutOptions(): { label: string; value: string }[] {
+    return this.getWorkoutOptions();
+  }
 
   get workoutTypes(): string[] {
     return this.userDataService.getWorkoutTypes();
   }
 
-  constructor(private userDataService: UserDataService) {
-    this.workoutOptions = this.getWorkoutOptions();
-  }
+  constructor(private userDataService: UserDataService) {}
 
   get users(): User[] {
     return this.userDataService
